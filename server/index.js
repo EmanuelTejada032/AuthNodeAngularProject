@@ -4,16 +4,18 @@ const app = express();
 
 
 
-app.get('/login', (req, res ) => {
+const authRoutes =  require('./routes/auth')
 
-    console.log(req)
 
-    res.send({
-        ok:true,
-        msg:"everything ok",
-        user: "5a5ds42135d4sd"
-    });
-});
+
+
+
+
+
+
+app.use("/api/auth",  authRoutes );
+
+
 
 
 
