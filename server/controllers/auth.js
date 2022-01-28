@@ -49,12 +49,39 @@ const createUser = async (req, res = response) => {
 }
 
 
-const userLogin = (req, res = response) => {
+const userLogin = async (req, res = response) => {
     const { email, password} = req.body;
-    res.json({
-        ok: true,
-        msg: "User logged in"
-    })
+    try {
+        const user = await User.findOne({email});
+        if(!user){
+           return res.status(400).json({
+                ok: false,
+                msg: "Wrong credentials, verify user or password"
+            });    
+        }
+        const validatePassword = bcrypt.compareSync(password, user.password);
+        if(!validatePassword){
+            return res.status(400).json({
+                 ok: false,
+                 msg: "Wrong credentials, verify user or password"
+             });    
+         }
+
+        const JWT = await generateJWT(user.id, user.name);
+
+        return res.json({
+            ok: true,
+            uid: user.id,
+            name: user.name,
+            token: JWT
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            msg: "Server error, we are working on it, wait a little until it\'s fixed"
+        })
+    }
 }
 
 const renewToken = (req, res = response) => {
