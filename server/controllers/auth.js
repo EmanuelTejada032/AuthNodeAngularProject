@@ -1,4 +1,4 @@
-const { response } = require('express');
+const { response } = require('express'); // To access all response properties when using req. on methods (To get better typed data)
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const {generateJWT} = require('../helpers/jwt-generator')
@@ -24,7 +24,6 @@ const createUser = async (req, res = response) => {
         newUser.password = bcrypt.hashSync( password, salt);
 
         //generate JWT
-        console.log("new User ID", newUser.id);
         const JWT = await generateJWT(newUser.id, newUser.name);
 
         await newUser.save();
@@ -56,14 +55,14 @@ const userLogin = async (req, res = response) => {
         if(!user){
            return res.status(400).json({
                 ok: false,
-                msg: "Wrong credentials, verify user or password"
+                msg: 'Wrong credentials, verify user or password'
             });    
         }
         const validatePassword = bcrypt.compareSync(password, user.password);
         if(!validatePassword){
             return res.status(400).json({
                  ok: false,
-                 msg: "Wrong credentials, verify user or password"
+                 msg: 'Wrong credentials, verify user or password'
              });    
          }
 
@@ -79,15 +78,21 @@ const userLogin = async (req, res = response) => {
     } catch (error) {
         res.status(500).json({
             ok: false,
-            msg: "Server error, we are working on it, wait a little until it\'s fixed"
+            msg: 'Server error, we are working on it, wait a little until it\'s fixed'
         })
     }
 }
 
-const renewToken = (req, res = response) => {
+const renewToken = async (req, res = response) => {
+    const {uid, name } = req;
+    const JWT = await generateJWT(uid, name);
+    console.log(JWT);
     res.json({
         ok: true,
-        msg: "Renew token"
+        msg: 'Renew token',
+        uid,
+        name,
+        newToken: JWT
     })
 }
 
