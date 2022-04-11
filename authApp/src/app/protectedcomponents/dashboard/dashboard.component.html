@@ -1,1 +1,10 @@
-<p>dashboard works!</p>
+
+<h1>Protected info</h1>
+<h2>User info</h2>
+<pre>
+    {{user | json}}
+</pre>
+
+<button class="logout-form-btn" (click)="logout()">
+    Logout
+</button>
