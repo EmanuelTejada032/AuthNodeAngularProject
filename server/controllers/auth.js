@@ -13,7 +13,7 @@ const createUser = async (req, res = response) => {
         if(user){
             return res.status(400).json({
                 ok: false,
-                msg: 'There is already a user with this email'
+                message: 'There is already a user with this email'
             })
         }
         
@@ -30,9 +30,10 @@ const createUser = async (req, res = response) => {
 
         return res.status(201).json({
             ok: true,
-            msg: 'User succesfully created',
+            message: 'User succesfully created',
             uid: newUser.id,
             name,
+            email: newUser.email,
             token: JWT
         })
         
@@ -40,7 +41,7 @@ const createUser = async (req, res = response) => {
         console.log(error);
         return res.status(500).json({
             ok: false,
-            msg: 'Server error, we are working on it, wait a little until it\'s fixed'
+            message: 'Server error, we are working on it, wait a little until it\'s fixed'
         });    
     }
 
@@ -55,14 +56,14 @@ const userLogin = async (req, res = response) => {
         if(!user){
            return res.status(400).json({
                 ok: false,
-                msg: 'Wrong credentials, verify user or password'
+                message: 'Wrong credentials, verify user or password'
             });    
         }
         const validatePassword = bcrypt.compareSync(password, user.password);
         if(!validatePassword){
             return res.status(400).json({
                  ok: false,
-                 msg: 'Wrong credentials, verify user or password'
+                 message: 'Wrong credentials, verify user or password'
              });    
          }
 
@@ -72,13 +73,14 @@ const userLogin = async (req, res = response) => {
             ok: true,
             uid: user.id,
             name: user.name,
+            email: user.email,
             token: JWT
         })
 
     } catch (error) {
         res.status(500).json({
             ok: false,
-            msg: 'Server error, we are working on it, wait a little until it\'s fixed'
+            message: 'Server error, we are working on it, wait a little until it\'s fixed'
         })
     }
 }
@@ -87,11 +89,13 @@ const renewToken = async (req, res = response) => {
     const {uid, name } = req;
     const JWT = await generateJWT(uid, name);
     console.log(JWT);
+    const user = await User.findOne({uid});
     res.json({
         ok: true,
-        msg: 'Renew token',
+        message: 'Renew token',
         uid,
         name,
+        email: user.email,
         newToken: JWT
     })
 }

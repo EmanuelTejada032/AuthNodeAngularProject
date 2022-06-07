@@ -17,10 +17,13 @@ export interface AuthResponse {
     uid?: string;
     name?:  string;
     token?: string;
-    msg?: string;
+    newToken?: string;
+    message?: string;
+    email?: string;
 }
 
 export interface LoggedInUser {
     uid: string;
     name: string;
+    email: string;
 }

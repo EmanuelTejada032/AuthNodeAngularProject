@@ -2925,4 +2925,10 @@
   -ms-align-items: center;
   align-items: center;
   }
+
+  .error-text{
+    border: 0.5px solid rgb(233, 66, 66);
+    font-size: small;
+    font-weight: lighter;
+  }
   

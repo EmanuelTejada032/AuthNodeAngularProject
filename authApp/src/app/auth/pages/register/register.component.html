@@ -14,6 +14,7 @@
                placeholder="type a name">
         <span class="focus-input100"></span>
     </div>
+    <span class="error-text" *ngIf="isValidField('name')">name should be at least 3 chars long</span>
 
     <div class="wrap-input100 m-b-23">
         <span class="label-input100">Email</span>
@@ -24,6 +25,7 @@
                placeholder="type an email">
         <span class="focus-input100"></span>
     </div>
+    <span class="error-text" *ngIf="isValidField('email')">This field should be a valid email</span>
 
     <div class="wrap-input100">
         <span class="label-input100">Password</span>
@@ -34,13 +36,14 @@
                placeholder="type a password">
         <span class="focus-input100"></span>
     </div>
+    <span class="error-text" *ngIf="isValidField('password')">Password should be at least 6 chars long</span>
     
     <div class="text-right p-t-8 p-b-31"></div>
     
     <div class="container-login100-form-btn">
         <div class="wrap-login100-form-btn">
             <div class="login100-form-bgbtn"></div>
-            <button class="login100-form-btn" [disabled]="registerForm.invalid" (click)="register()">
+            <button class="login100-form-btn">
                 register
             </button>
         </div>

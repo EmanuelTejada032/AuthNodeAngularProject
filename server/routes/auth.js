@@ -7,15 +7,15 @@ const router = Router();
 
 
 router.post('/register',[
-    body('name').not().isEmpty().withMessage('name field is required').isLength({ min: 5 }).withMessage('name length should be at least 6 chars long'),
+    body('name').not().isEmpty().withMessage('name field is required').isLength({ min: 3 }).withMessage('name length should be at least 3 chars long'),
     body('email').isEmail().withMessage('Email field is required and should be a valid email'),
-    body('password').isLength({ min: 10 }).withMessage('password field is required and should be 10 chars long'),
+    body('password').isLength({ min: 6 }).withMessage('password field is required and should be 6 chars long'),
     validateFields
 ], createUser)
 
 router.post('/login', [
     body('email').isEmail().withMessage('Email field is required and should be a valid email'),
-    body('password').isLength({ min: 10 }).withMessage('password field is required and should be at least  10 chars long'),
+    body('password').isLength({ min: 6 }).withMessage('password field is required and should be at least  10 chars long'),
     validateFields
 ] , userLogin)
 
